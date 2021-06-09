@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Scanner;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.Syntax;
 import qa.dataStructures.Question;
 import qa.parsers.JSONParser;
 import qa.parsers.Parser;
@@ -98,6 +99,9 @@ public class DataSetPreprocessing {
         }
         if (benchmark == Benchmark.QALD_9 || benchmark == Benchmark.QALD_ALL || benchmark == Benchmark.PropertiesDefined) {
             questions.addAll(JSONParser.parseQald9File(currentDirectory + "/data/DBpedia/SPARQL/QALD-master/9/data/qald-9-train-multilingual.json", "QALD-9", "dbpedia"));
+        }
+        if (benchmark == Benchmark.QALD_9_TEST || benchmark == Benchmark.QALD_ALL || benchmark == Benchmark.PropertiesDefined) {
+            questions.addAll(JSONParser.parseQald9File(currentDirectory + "/data/DBpedia/SPARQL/QALD-master/9/data/qald-9-test-multilingual.json", "QALD-9", "dbpedia"));
         }
         if (benchmark == Benchmark.LC_QUAD || benchmark == Benchmark.PropertiesDefined) {
             questions.addAll(JSONParser.parseQuADFile(currentDirectory + "/data/DBpedia/SPARQL/LC-QuAD-data/test-data.json", "QUAD", "dbpedia"));
@@ -223,7 +227,7 @@ public class DataSetPreprocessing {
             String queryString = questions.get(i).getQuestionQuery();
             try {
                 if (queryString != null || !queryString.equals("")) {
-                    Query query = QueryFactory.create(queryString);
+                    Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
                     queries.add(query);
                 }
             } catch (Exception e) {
@@ -242,6 +246,8 @@ public class DataSetPreprocessing {
                 + " [These queies are not valid SPARQL 1.1 and are not supported by Apache Jena parser. (Excluded from the experiment)]");
         System.out.println("                Valid Queries: " + queries.size());
         System.out.println("        +++++++++++++++++++++++++");
+        System.out.println("Queries with problems: ");
+
         return queries;
     }
 

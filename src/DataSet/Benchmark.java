@@ -20,6 +20,7 @@ public class Benchmark {
     public final static int QALD_7 = 7;
     public final static int QALD_8 = 8;
     public final static int QALD_9 = 9;
+    public final static int QALD_9_TEST = 10;
     
     public final static int QALD_ALL = 100;
     public final static int LC_QUAD = 101;

@@ -406,7 +406,19 @@ public class JSONParser {
                 }
             }
             // The question's SPARQL Query
-            question.setQuestionQuery(currentQuestionObject.getJSONObject("query").getString("sparql"));
+            final String XSD_PREFIX = "PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#> ";
+            final String DBO_PREFIX = "PREFIX dbo: <http://dbpedia.org/ontology/> ";
+            final String DBR_PREFIX = "PREFIX dbr: <http://dbpedia.org/resource/> ";
+            final String DCT_PREFIX = "PREFIX dct: <http://purl.org/dc/terms/> ";
+            final String DBP_PREFIX = "PREFIX dbp: <http://dbpedia.org/property/> ";
+            final String DBC_PREFIX = "PREFIX dbc: <http://dbpedia.org/resource/Category:> ";
+            final String YAGO_PREFIX = "PREFIX yago: <http://dbpedia.org/class/yago/> ";
+            final String PREFIX = XSD_PREFIX+DBO_PREFIX+DBR_PREFIX+DCT_PREFIX+DBP_PREFIX+DBC_PREFIX+YAGO_PREFIX;
+            String query = currentQuestionObject.getJSONObject("query").getString("sparql");
+            if(null != query && query.length() > 0) {
+                query = PREFIX+query;
+            }
+            question.setQuestionQuery(query);
             // The question's answers
             JSONArray answersArray = currentQuestionObject.getJSONArray("answers");
             for (int j = 0; j < answersArray.length(); ++j) {
